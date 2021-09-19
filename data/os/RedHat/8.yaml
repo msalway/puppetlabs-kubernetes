@@ -1,0 +1,2 @@
+---
+kubernetes::docker_yum_baseurl: 'https://download.docker.com/linux/centos/8/%{facts.architecture}/stable'
