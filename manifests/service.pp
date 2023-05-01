@@ -112,15 +112,15 @@ class kubernetes::service (
         }
       }
 
-      file { '/etc/systemd/system/containerd.service.d':
-        ensure => directory,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-        notify => Exec['kubernetes-systemd-reload'],
-      }
-
       if $container_runtime_use_proxy {
+        file { '/etc/systemd/system/containerd.service.d':
+          ensure => directory,
+          owner  => 'root',
+          group  => 'root',
+          mode   => '0755',
+          notify => Exec['kubernetes-systemd-reload'],
+        }
+
         file { '/etc/systemd/system/containerd.service.d/http-proxy.conf':
           ensure  => file,
           notify  => [Exec['kubernetes-systemd-reload'], Service['containerd']],
