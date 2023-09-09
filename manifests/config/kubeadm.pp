@@ -293,7 +293,7 @@ class kubernetes::config::kubeadm (
     fail('One of $etcd_discovery_srv or $etcd_initial_cluster variables must be defined')
   }
 
-  $kube_dirs = ['/etc/kubernetes','/etc/kubernetes/manifests','/etc/kubernetes/pki','/etc/kubernetes/pki/etcd']
+  $kube_dirs = ['/etc/kubernetes','/etc/kubernetes/pki','/etc/kubernetes/pki/etcd']
   $etcd = ['ca.crt', 'ca.key', 'client.crt', 'client.key','peer.crt', 'peer.key', 'server.crt', 'server.key']
   $pki = ['ca.crt','ca.key','front-proxy-ca.crt','front-proxy-ca.key','sa.pub','sa.key']
   $kube_dirs.each | String $dir | {
@@ -302,6 +302,12 @@ class kubernetes::config::kubeadm (
       mode    => '0600',
       recurse => true,
     }
+  }
+
+  file { '/etc/kubernetes/manifests':
+    ensure  => directory,
+    mode    => '0644',
+    recurse => true,
   }
 
   if $manage_etcd {
