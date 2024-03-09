@@ -162,7 +162,7 @@ class kubernetes::packages (
   Variant[Stdlib::Unixpath, String] $containerd_socket  = $kubernetes::containerd_socket,
 ) {
   # Download directory for archives
-  file { $tmp_directory:
+  @file { $tmp_directory:
     ensure => 'directory',
     mode   => '0750',
     owner  => 'root',
@@ -460,6 +460,7 @@ class kubernetes::packages (
       $containerd_archive_checksum_verify = false
       $containerd_archive_creates = ['/usr/bin/containerd']
     }
+    realize(File[$tmp_directory])
     archive { $containerd_archive:
       path            => "${tmp_directory}/${containerd_archive}",
       source          => $containerd_source,
@@ -485,6 +486,7 @@ class kubernetes::packages (
         $etcd_archive_checksum_verify = false
         $etcd_archive_creates = ['/usr/local/bin/etcd', '/usr/local/bin/etcdctl']
       }
+      realize(File[$tmp_directory])
       archive { $etcd_archive:
         path            => "${tmp_directory}/${etcd_archive}",
         source          => $etcd_source,
