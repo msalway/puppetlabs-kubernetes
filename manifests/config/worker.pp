@@ -102,7 +102,6 @@ class kubernetes::config::worker (
 
   file { '/etc/kubernetes':
     ensure  => directory,
-    mode    => '0600',
   }
 
   file { $config_file:
